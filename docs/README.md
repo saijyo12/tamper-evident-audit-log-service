@@ -1,6 +1,8 @@
 # Documentation
 
 - [API reference](api.md)
+- [JWT authentication usage](jwt-usage.md)
+- [Swagger and OpenAPI usage](swagger-usage.md)
 - [Architecture](architecture.md)
 - [Final engineering summary](final-engineering-summary.md)
 - [Postman testing guide](postman-testing.md)
