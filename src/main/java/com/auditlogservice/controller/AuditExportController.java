@@ -27,5 +27,4 @@ public class AuditExportController {
             @RequestParam(required = false) String resourceId) {
         return ResponseEntity.ok(auditLogService.export(actorId, resourceId));
     }
-
 }
