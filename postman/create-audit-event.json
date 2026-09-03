@@ -1,0 +1,15 @@
+{
+  "eventType": "RECORD_UPDATED",
+  "actorId": "user-42",
+  "resourceType": "customer",
+  "resourceId": "customer-9",
+  "payload": {
+    "changedFields": ["email", "phone"],
+    "source": "admin-ui",
+    "accountNumber": "1234567890",
+    "person": {
+      "name": "Jane Doe",
+      "ssn": "111-22-3333"
+    }
+  }
+}

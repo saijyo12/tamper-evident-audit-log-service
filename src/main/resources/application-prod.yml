@@ -1,0 +1,34 @@
+spring:
+  datasource:
+    # Production credentials must be supplied through the environment.
+    url: "${DATABASE_URL:jdbc:postgresql://localhost:5432/auditlog}"
+    driver-class-name: org.postgresql.Driver
+    username: "${DATABASE_USERNAME:auditlog}"
+    password: "${DATABASE_PASSWORD}"
+  h2:
+    console:
+      enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: never
+    metrics:
+      access: read-only
+    prometheus:
+      access: read-only
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+app:
+  security:
+    enabled: true
+    jwt-secret: "${JWT_SECRET}"
+    username: "${AUTH_USERNAME}"
+    password: "${AUTH_PASSWORD}"
+    token-validity-seconds: "${JWT_TOKEN_VALIDITY_SECONDS:3600}"

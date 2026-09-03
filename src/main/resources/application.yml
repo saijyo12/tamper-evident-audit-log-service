@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: tamper-evident-audit-log-service
+  profiles:
+    default: local
+  sql:
+    init:
+      mode: always
+
+management:
+  info:
+    env:
+      enabled: true
+  endpoints:
+    access:
+      default: read-only
+    web:
+      base-path: /actuator
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+      probes:
+        enabled: true
+    info:
+      access: read-only
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: Tamper-evident audit log service
+    version: "@project.version@"
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: alpha

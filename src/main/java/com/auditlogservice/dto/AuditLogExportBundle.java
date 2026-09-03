@@ -9,5 +9,12 @@ public record AuditLogExportBundle(
         String filterType,
         String filterValue,
         String hashAlgorithm,
-        List<AuditLogResponse> records) {
+        String chainHeadHash,
+        List<AuditLogResponse> records,
+        List<ExportChainLink> chainProof,
+        String bundleDigest,
+        String signatureAlgorithm,
+        String signingPublicKey,
+        String signingKeyId,
+        String signature) {
 }

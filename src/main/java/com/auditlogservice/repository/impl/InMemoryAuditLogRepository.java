@@ -7,10 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.stereotype.Repository;
 
-/** Thread-safe ordered repository. It intentionally has no mutation or removal methods. */
-@Repository
+/** Thread-safe test repository; runtime profiles use the JDBC repository. */
 public class InMemoryAuditLogRepository implements AuditLogRepository {
     private final LinkedHashMap<UUID, AuditLogEntry> entries = new LinkedHashMap<>();
 

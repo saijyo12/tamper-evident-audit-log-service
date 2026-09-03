@@ -19,6 +19,7 @@ public record AuditLogEntry(
         String hash,
         String payloadCommitment,
         Map<String, String> fieldCommitments,
+        Map<String, String> fieldSalts,
         Set<String> redactedFields,
         Instant archivedAt) {
 }

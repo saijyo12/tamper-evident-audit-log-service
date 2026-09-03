@@ -1,0 +1,134 @@
+{
+  "info": {
+    "name": "Tamper-Evident Audit Log Service",
+    "description": "Requests for creating, querying, verifying, redacting, archiving, and exporting audit records.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "recordId",
+      "value": ""
+    },
+    {
+      "key": "accessToken",
+      "value": ""
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{accessToken}}", "type": "string" }]
+  },
+  "item": [
+    {
+      "name": "Get JWT token",
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "if (pm.response.code === 200) {",
+            "  pm.collectionVariables.set('accessToken', pm.response.json().accessToken);",
+            "}"
+          ],
+          "type": "text/javascript"
+        }
+      }],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"change-me-local\"\n}"
+        },
+        "url": "{{baseUrl}}/api/v1/auth/token"
+      }
+    },
+    {
+      "name": "Create audit event",
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "if (pm.response.code === 201) {",
+            "  pm.collectionVariables.set('recordId', pm.response.json().id);",
+            "}"
+          ],
+          "type": "text/javascript"
+        }
+      }],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"eventType\": \"RECORD_UPDATED\",\n  \"actorId\": \"user-42\",\n  \"resourceType\": \"customer\",\n  \"resourceId\": \"customer-9\",\n  \"payload\": {\n    \"changedFields\": [\"email\"],\n    \"accountNumber\": \"1234567890\",\n    \"person\": { \"ssn\": \"111-22-3333\" }\n  }\n}"
+        },
+        "url": "{{baseUrl}}/audit"
+      }
+    },
+    {
+      "name": "Query audit events",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/audit?actorId=user-42&resourceType=customer&resourceId=customer-9&eventType=RECORD_UPDATED&page=0&size=25"
+      }
+    },
+    {
+      "name": "Verify chain",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/audit/verify"
+      }
+    },
+    {
+      "name": "Redact sensitive fields",
+      "request": {
+        "method": "PATCH",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fields\": [\"/accountNumber\", \"/person/ssn\"]\n}"
+        },
+        "url": "{{baseUrl}}/audit/records/{{recordId}}/redactions"
+      }
+    },
+    {
+      "name": "Archive records older than 90 days",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/audit/retention/archive?olderThanDays=90"
+      }
+    },
+    {
+      "name": "Export by actor",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/audit/export?actorId=user-42"
+      }
+    },
+    {
+      "name": "Export by resource",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/audit/export?resourceId=customer-9"
+      }
+    },
+    {
+      "name": "Swagger UI",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/swagger-ui.html"
+      }
+    },
+    {
+      "name": "Health check",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/actuator/health"
+      }
+    }
+  ]
+}

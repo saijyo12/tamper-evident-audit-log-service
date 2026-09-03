@@ -1,0 +1,6 @@
+{
+  "fields": [
+    "/accountNumber",
+    "/person/ssn"
+  ]
+}
