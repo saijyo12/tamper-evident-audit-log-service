@@ -31,6 +31,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping({"/api/v1/audit-logs", "/audit"})
 @Tag(name = "Audit records", description = "Create, query, and verify tamper-evident audit records")
 public class AuditLogController {
+
     private final AuditLogService auditLogService;
 
     public AuditLogController(AuditLogService auditLogService) {
